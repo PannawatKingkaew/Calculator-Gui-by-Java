@@ -1,9 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 public class Frame {
-	
-	
+
+	//declare textBox contains String of user's input
+	protected String textBox = "";
+
+	//declare Event's object	
+	Event e = new Event();	
+		
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
 
@@ -24,6 +30,9 @@ public class Frame {
 		int posX2 = 100;
 		int posY2 = 50;
 		final int padding = 10;
+		
+		//Display creating status
+		System.out.println("Start creating");
 
 		//screen setting	
 		frame.setSize(450, 410);
@@ -40,7 +49,10 @@ public class Frame {
 		for(int i = 0; i < 16; i++){
 
 			button[i] = new JButton(String.valueOf(btnName[i]));	
+			button[i].addActionListener(e);
 			index += 1;
+			
+			//Display button's name, can be delete anytimes	
 			System.out.println(button[i].getText());
 		}
 
@@ -64,9 +76,23 @@ public class Frame {
 			posX = 10;
 			posY += posY2 + padding;
 		}
-		
+	
+		//Display creating status	
 		System.out.println("created"); 
 
 		frame.setVisible(true);	
 	}
+public class Event implements ActionListener{
+
+	public void actionPerformed(ActionEvent e){
+		textBox += ((JButton)e.getSource()).getText();
+	
+		calText.setText(textBox);
+		panel.add(calText);	
+		//debugging output  can be delete anytimes
+		System.out.printf("textBox value {%s}\n", textBox);
+
+	}
+
+}
 }
