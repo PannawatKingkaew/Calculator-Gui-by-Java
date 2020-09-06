@@ -2,19 +2,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.*;
 public class Frame {
 
 	//declare textBox contains String of user's input
-	protected String textBox = "";
+	protected  String textBox = "";
+	protected  String temp = "";
+        protected  Float total ;
+	protected  Float value;
+        protected  ArrayList<Float> num = new ArrayList<Float>();
+        protected  ArrayList<String> op = new ArrayList<String>();
+
 
 	//declare Event's object	
-	Event e = new Event();	
-		
+	Event e = new Event();
+	Event equal = new Event();
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
 
 	JTextField calText = new JTextField(20);
-
 	JButton[] button = new JButton[16];
 
 	public void createFrame(){
@@ -48,9 +54,120 @@ public class Frame {
 		//declare each button
 		for(int i = 0; i < 16; i++){
 
-			button[i] = new JButton(String.valueOf(btnName[i]));	
-			button[i].addActionListener(e);
-			index += 1;
+			button[i] = new JButton(String.valueOf(btnName[i]));
+			if (i == 14)
+			{
+				button[i].addActionListener(new ActionListener()
+				{
+			 		public void actionPerformed(ActionEvent equal)
+					{ 
+						num.add(value);
+                                                
+                                               
+						if(op.get(0) == "+")
+						{ 
+							total = num.get(0) + num.get(1) ;
+						}
+                                                else if(op.get(0) == "-") 
+                                                { 
+                                                        total = num.get(0) - num.get(1) ;
+                                                }
+                                                else if(op.get(0) == "*") 
+                                                { 
+                                                        total = num.get(0) * num.get(1) ;
+                                                }
+                                                else if(op.get(0) == "/") 
+                                                { 
+                                                        total = num.get(0) / num.get(1) ;
+                                                }
+						String stotal = String.valueOf(total); 
+						op.clear();
+						num.clear();
+						temp ="";
+						num.add(total);
+						calText.setText(stotal);
+						textBox = stotal;
+						panel.add(calText);
+					}
+				});
+				index += 1;
+			}
+                        else if (i == 3)
+                        {
+                                button[i].addActionListener(new ActionListener()
+                                {
+                                        public void actionPerformed(ActionEvent add)
+                                        { 
+						textBox += ((JButton)add.getSource()).getText();
+              					calText.setText(textBox);
+               					panel.add(calText);  
+                                                num.add(value);
+						op.add("+");
+						temp ="";
+                                                System.out.printf("textBox value {%s}\n", textBox);
+                                                
+                                        }
+                                });
+                                index += 1;
+                        }
+                        else if (i == 7)
+                        {
+                                button[i].addActionListener(new ActionListener()
+                                {
+                                        public void actionPerformed(ActionEvent subtract)
+                                        { 
+				                textBox += ((JButton)subtract.getSource()).getText();
+                                                calText.setText(textBox);
+                                                panel.add(calText); 
+                                                num.add(value);
+                                                op.add("-");
+						temp="";
+                                                System.out.printf("textBox value {%s}\n", textBox);
+                                           
+                                        }
+                                });
+                                index += 1;
+                        }
+                        else if (i == 11)
+                        {
+                                button[i].addActionListener(new ActionListener()
+                                {
+                                        public void actionPerformed(ActionEvent multiply)
+                                        { 
+				                textBox += ((JButton)multiply.getSource()).getText();
+                                                calText.setText(textBox);
+                                                panel.add(calText); 
+                                                num.add(value);
+                                                op.add("*");
+						temp ="";
+                                                System.out.printf("textBox value {%s}\n", textBox);
+                                        }
+                                });
+                                index += 1;
+                        }
+
+                        else if (i == 15)
+                        {
+                                button[i].addActionListener(new ActionListener()
+                                {
+                                        public void actionPerformed(ActionEvent divide)
+                                        { 
+				                textBox += ((JButton)divide.getSource()).getText();
+                                                calText.setText(textBox);
+                                                panel.add(calText); 
+                                                num.add(value);
+                                                op.add("/");
+						temp = "";
+				                System.out.printf("textBox value {%s}\n", textBox);
+                                        }
+                                });
+                                index += 1;
+                        }
+
+
+			else
+				button[i].addActionListener(e);
+				index += 1;
 			
 			//Display button's name, can be delete anytimes	
 			System.out.println(button[i].getText());
@@ -61,7 +178,6 @@ public class Frame {
 		for(int row = 1; row <= 4; row++){
 			
 			for(int column = 1; column <= 4; column++){
-
 					System.out.println(String.valueOf(index));	
 					
 					button[index].setBounds(posX, posY, posX2, posY2);
@@ -76,6 +192,7 @@ public class Frame {
 			posX = 10;
 			posY += posY2 + padding;
 		}
+
 	
 		//Display creating status	
 		System.out.println("created"); 
@@ -86,13 +203,12 @@ public class Event implements ActionListener{
 
 	public void actionPerformed(ActionEvent e){
 		textBox += ((JButton)e.getSource()).getText();
-	
+		temp += ((JButton)e.getSource()).getText();
+		value = Float.parseFloat(temp);
 		calText.setText(textBox);
 		panel.add(calText);	
 		//debugging output  can be delete anytimes
 		System.out.printf("textBox value {%s}\n", textBox);
-
-	}
-
+}
 }
 }
