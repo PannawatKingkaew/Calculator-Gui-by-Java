@@ -1,5 +1,5 @@
 import javax.swing.*;
-import java.awt.*;
+import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
@@ -8,9 +8,9 @@ public class Frame {
 	//declare textBox contains String of user's input
 	protected  String textBox = "";
 	protected  String temp = "";
-        protected  Float total ;
-	protected  Float value;
-        protected  ArrayList<Float> num = new ArrayList<Float>();
+        protected  BigDecimal total = new BigDecimal(0);
+	protected  BigDecimal value = new BigDecimal(0);
+        protected  List<BigDecimal> num = new ArrayList<BigDecimal>();
         protected  ArrayList<String> op = new ArrayList<String>();
 
 
@@ -66,19 +66,19 @@ public class Frame {
                                                
 						if(op.get(0) == "+")
 						{ 
-							total = num.get(0) + num.get(1) ;
+							total = num.get(0).add(num.get(1));
 						}
                                                 else if(op.get(0) == "-") 
                                                 { 
-                                                        total = num.get(0) - num.get(1) ;
+                                                        total = num.get(0).subtract(num.get(1));
                                                 }
                                                 else if(op.get(0) == "*") 
                                                 { 
-                                                        total = num.get(0) * num.get(1) ;
+                                                        total = num.get(0).multiply(num.get(1));
                                                 }
                                                 else if(op.get(0) == "/") 
                                                 { 
-                                                        total = num.get(0) / num.get(1) ;
+                                                        total = num.get(0).divide(num.get(1));
                                                 }
 						String stotal = String.valueOf(total); 
 						op.clear();
@@ -204,7 +204,7 @@ public class Event implements ActionListener{
 	public void actionPerformed(ActionEvent e){
 		textBox += ((JButton)e.getSource()).getText();
 		temp += ((JButton)e.getSource()).getText();
-		value = Float.parseFloat(temp);
+		value = new BigDecimal(temp);
 		calText.setText(textBox);
 		panel.add(calText);	
 		//debugging output  can be delete anytimes
